@@ -1,0 +1,17 @@
+- name: Cleanup Voting App from Kubernetes
+  hosts: local
+  gather_facts: false
+  vars:
+    namespace: voting-app
+    manifests_dir: /home/hisham/main_directory/kubernetes/app
+
+  tasks:
+    - name: Delete application manifests
+      command: kubectl delete -n {{ namespace }} -f {{ manifests_dir }}
+      failed_when: false
+      changed_when: false
+
+    - name: Delete namespace
+      command: kubectl delete namespace {{ namespace }}
+      failed_when: false
+      changed_when: false

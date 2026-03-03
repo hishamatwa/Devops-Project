@@ -1,0 +1,30 @@
+- name: Deploy Voting App on Kubernetes
+  hosts: local
+  gather_facts: false
+  vars:
+    namespace: voting-app
+    ns_file: /home/hisham/main_directory/kubernetes/namespace.yaml
+    manifests_dir: /home/hisham/main_directory/kubernetes/app
+
+  tasks:
+    - name: Check cluster access
+      command: kubectl get nodes
+      changed_when: false
+
+    - name: Apply namespace
+      command: kubectl apply -f {{ ns_file }}
+
+    - name: Apply application manifests
+      command: kubectl apply -n {{ namespace }} -f {{ manifests_dir }}
+
+    - name: Wait for pods Ready
+      command: kubectl wait --for=condition=Ready pod --all -n {{ namespace }} --timeout=240s
+      changed_when: false
+
+    - name: Show pods
+      command: kubectl get pods -n {{ namespace }}
+      changed_when: false
+
+    - name: Show services
+      command: kubectl get svc -n {{ namespace }}
+      changed_when: false
