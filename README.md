@@ -16,9 +16,3 @@ This is a DevOps automation project to deploy the **Voting App microservices** o
 - db (PostgreSQL): stores results
 - result: results web page
 
-## 🚀 How to Run
-
-### 1) Create the local Kubernetes cluster
-```bash
-kind create cluster --image kindest/node:v1.29.7
-kubectl get nodes
